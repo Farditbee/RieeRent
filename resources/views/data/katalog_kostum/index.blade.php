@@ -89,7 +89,7 @@
                   </div>
                   <div class="card-footer">
                     @if ($k->stok == 'tersedia')
-                    <a href="{{ route('data.rental.create', $k->id) }}" class="btn btn-sm btn-success">Rental Sekarang</a>
+                    <a href="{{ route('data.rental.create', ['katalog' => $k->id]) }}" class="btn btn-sm btn-success">Rental Sekarang</a>
                     @else
                     <a class="btn btn-sm btn-secondary disabled" role="button" aria-disabled="true">Rental Sekarang</a>
                     @endif

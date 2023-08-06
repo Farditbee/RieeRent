@@ -36,7 +36,7 @@
           <div class="row">
             <div class="col-md-12 grid-margin">
                 <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                    <h3 class="font-weight-bold">Form Perentalan Kostum</h3>
+                    <h3 class="font-weight-bold">Form Perentalan Kostum: {{ $katalog->nama }}</h3>
                   </div>
                   <x-adminlte-alerts />
             <div class="row">
@@ -54,7 +54,10 @@
                               <div class="col-md-6">
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Kode Kostum</label>
-                                    <input type="file" name="img[]" class="file-upload-default">
+                                    <div class="col-sm-9">
+                                      <input type="text" disabled class="form-control" value="{{ $katalog->kode }}">
+                                    </div>
+                                    {{-- <input type="file" name="img[]" class="file-upload-default">
                                     <div class="col-sm-9">
                                       <select name="id" id="id" class="form-control select2" disabled>
                                           @foreach ($katalogs as $id => $kode)
@@ -67,7 +70,7 @@
                                           </p>
                                       @enderror
 
-                                    </div>
+                                    </div> --}}
                                   </div>
                               </div>
 
@@ -75,15 +78,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Model</label>
                                 <div class="col-sm-9">
-                                  <select name="model" id="model" class="form-control select2" disabled>
-                                    <option value="Classic" {{ old('model') == "Classic" ? "selected" : "" }}>Classic</option>
-                                    <option value="Kimono" {{ old('model') == "Kimono" ? "selected" : "" }}>Kimono</option>
-                                    <option value="Seifuku" {{ old('model') == "Seifuku" ? "selected" : "" }}>Seifuku</option>
-                                    <option value="Gaun" {{ old('model') == "Gaun" ? "selected" : "" }}>Gaun</option>
-                                    <option value="Maid" {{ old('model') == "Maid" ? "selected" : "" }}>Maid</option>
-                                    <option value="Lolita" {{ old('model') == "Lolita" ? "selected" : "" }}>Lolita</option>
-                                    <option value="Idol" {{ old('model') == "Idol" ? "selected" : "" }}>Idol</option>
-                                </select>
+                                  <input type="text" disabled class="form-control" value="{{ $katalog->kode }}">
                                 @error('model')
                                     <p class="text-danger">
                                         <small>{{ $message }}</small>
@@ -99,7 +94,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Nama Kostum</label>
                                     <div class="col-sm-9">
-                                        <input disabled type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" value="{{ old('nama') }}" placeholder="Masukkan Nama Kostum">
+                                      <input type="text" disabled class="form-control" value="{{ $katalog->nama }}">
 
                                     <!-- error message untuk nama -->
                                     @error('nama')
@@ -115,16 +110,7 @@
                                 <div class="form-group row">
                                   <label class="col-sm-3 col-form-label">Ukuran</label>
                                   <div class="col-sm-9">
-                                    <select name="ukuran" id="ukuran" class="form-control select2" disabled>
-                                        <option value="S" {{ old('ukuran') == "S" ? "selected" : "" }}>S</option>
-                                        <option value="S-M" {{ old('ukuran') == "S-M" ? "selected" : "" }}>S - M</option>
-                                        <option value="M" {{ old('ukuran') == "M" ? "selected" : "" }}>M</option>
-                                        <option value="M-L" {{ old('ukuran') == "M-L" ? "selected" : "" }}>M - L</option>
-                                        <option value="L" {{ old('ukuran') == "L" ? "selected" : "" }}>L</option>
-                                        <option value="L-XL" {{ old('ukuran') == "L-XL" ? "selected" : "" }}>L - XL</option>
-                                        <option value="XL" {{ old('ukuran') == "XL" ? "selected" : "" }}>XL</option>
-                                        <option value="All Size" {{ old('ukuran') == "All Size" ? "selected" : "" }}>All Size</option>
-                                    </select>
+                                    <input type="text" disabled class="form-control" value="{{ $katalog->ukuran }}">
                                   </div>
                                 </div>
                             </div>
@@ -148,7 +134,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Harga</label>
                                 <div class="col-sm-9">
-                                    <input disabled type="number" class="form-control @error('harga') is-invalid @enderror" name="harga" value="{{ old('harga') }}" placeholder="Masukkan Harga Kostum">
+                                  <input type="text" disabled class="form-control" value="{{ $katalog->harga }}">
 
                                 <!-- error message untuk harga -->
                                 @error('harga')

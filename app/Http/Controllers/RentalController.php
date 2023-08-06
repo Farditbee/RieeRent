@@ -29,6 +29,9 @@ class RentalController extends Controller
         return view('data.rental.create', compact('rental'), [
             'katalogs' => Katalog::all()->pluck('kode', 'nama', 'model', 'ukuran', 'harga', 'id'),
             'users' => User::all()->pluck('name', 'id'),
+            'katalog' => Katalog::query()
+                ->where('id', request()->get('katalog'))
+                ->first(),
         ]);
     }
 
