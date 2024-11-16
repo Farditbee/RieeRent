@@ -34,32 +34,30 @@ class KatalogController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(StoreKatalogRequest $request)
-    {
-
-        //upload image
+{
+    // Upload the image
+    if ($request->hasFile('thumbnail')) {
         $image = $request->file('thumbnail');
-        $image->storeAs('public/katalogs', $image->hashName());
+        $imageName = $image->hashName(); // Get unique hash name for the image
 
-        //create post
-        Katalog::create([
-            'thumbnail' => $image->hashName(),
-            'kode'     => $request->kode,
-            'nama'   => $request->nama,
-            'model'   => $request->model,
-            'ukuran'   => $request->ukuran,
-            'harga'   => $request->harga,
-            'stok'   => $request->stok,
-            'keterangan'   => $request->keterangan,
-        ]);
-
-        // try {
-        //     Katalog::create($request->validated());
-        // } catch (\Throwable $th) {
-        //     return redirect()->back()->with('error', $th->getMessage())->withInput();
-        // }
-
-        return redirect()->back()->with('success', 'Berhasil menambahkan Katalog Baru');
+        // Save the image to katalogs folder in storage/app/public
+        $image->storeAs('katalogs', $imageName); // Save without duplicating 'public' in path
     }
+
+    // Create a new catalog entry
+    Katalog::create([
+        'thumbnail'   => $imageName ?? null, // Save the image name or null if no image uploaded
+        'kode'        => $request->kode,
+        'nama'        => $request->nama,
+        'model'       => $request->model,
+        'ukuran'      => $request->ukuran,
+        'harga'       => $request->harga,
+        'stok'        => $request->stok,
+        'keterangan'  => $request->keterangan,
+    ]);
+
+    return redirect()->back()->with('success', 'Berhasil menambahkan Katalog Baru');
+}
 
     /**
      * Display the specified resource.
@@ -81,44 +79,46 @@ class KatalogController extends Controller
      * Update the specified resource in storage.
      */
     public function update(UpdateKatalogRequest $request, Katalog $katalog)
-    {
-        //check if image is uploaded
-        if ($request->hasFile('thumbnail')) {
+{
+    // Check if new image is uploaded
+    if ($request->hasFile('thumbnail')) {
+        // Upload new image
+        $image = $request->file('thumbnail');
+        // Get the file name (you can keep it the same as the old one or use a new name)
+        $imageName = $image->hashName(); // You can use a fixed name if you want to retain the old file name
 
-            //upload new image
-            $image = $request->file('thumbnail');
-            $image->storeAs('public/katalogs', $image->hashName());
+        // Save the image to the katalogs folder in storage/app/public
+        $image->storeAs('katalogs', $imageName);  // This will save to storage/app/public/katalogs
 
-            //delete old image
-            Storage::delete('public/katalogs/'.$katalog->thumbnail);
+        // Delete the old image if exists
+        Storage::delete('public/katalogs/' . $katalog->thumbnail);
 
-            //update post with new image
-            $katalog->update([
-            'thumbnail' => $image->hashName(),
-            'kode'     => $request->kode,
-            'nama'   => $request->nama,
-            'model'   => $request->model,
-            'ukuran'   => $request->ukuran,
-            'harga'   => $request->harga,
-            'stok'   => $request->stok,
-            'keterangan'   => $request->keterangan,
-            ]);
-
-        } else {
-
-            //update post without image
-            $katalog->update([
-                'kode'     => $request->kode,
-                'nama'   => $request->nama,
-                'model'   => $request->model,
-                'ukuran'   => $request->ukuran,
-                'harga'   => $request->harga,
-                'stok'   => $request->stok,
-                'keterangan'   => $request->keterangan,
-            ]);
-        }
-        return redirect()->back()->with('success', 'Berhasil Mengubah Katalog');
+        // Update the catalog entry with the new image and other data
+        $katalog->update([
+            'thumbnail' => $imageName,
+            'kode'      => $request->kode,
+            'nama'      => $request->nama,
+            'model'     => $request->model,
+            'ukuran'    => $request->ukuran,
+            'harga'     => $request->harga,
+            'stok'      => $request->stok,
+            'keterangan'=> $request->keterangan,
+        ]);
+    } else {
+        // If no new image is uploaded, update the catalog without changing the image
+        $katalog->update([
+            'kode'      => $request->kode,
+            'nama'      => $request->nama,
+            'model'     => $request->model,
+            'ukuran'    => $request->ukuran,
+            'harga'     => $request->harga,
+            'stok'      => $request->stok,
+            'keterangan'=> $request->keterangan,
+        ]);
     }
+
+    return redirect()->back()->with('success', 'Berhasil Mengubah Katalog');
+}
 
     /**
      * Remove the specified resource from storage.
